@@ -14,65 +14,59 @@
 - name: Verify that users exists
   ansible.builtin.getent:
     database: passwd
-    key: "{{ item }}"
-  loop: "{{ gradle_users }}"
+    key: "{{ gradle_user }}"
 
 
 - name: Ensure ~/.gradle directory exists for users
   ansible.builtin.file:
-    path: "/home/{{ item }}/.gradle"
+    path: "/home/{{ gradle_user }}/.gradle"
     modification_time: preserve
     access_time: preserve
     state: directory
-    owner: "{{ item }}"
-    group: "{{ item }}"
+    owner: "{{ gradle_user }}"
+    group: "{{ gradle_user }}"
     mode: 0700
-  loop: "{{ gradle_users }}"
 
 
 - name: Ensure ~/.profile.d directory exists for users
   ansible.builtin.file:
-    path: "/home/{{ item }}/.profile.d"
+    path: "/home/{{ gradle_user }}/.profile.d"
     modification_time: preserve
     access_time: preserve
     state: directory
-    owner: "{{ item }}"
-    group: "{{ item }}"
+    owner: "{{ gradle_user }}"
+    group: "{{ gradle_user }}"
     mode: 0700
-  loop: "{{ gradle_users }}"
-
 
 - name: Ensure ~/.profile.d/gradle.sh file exists for users
   ansible.builtin.file:
-    path: "/home/{{ item }}/.profile.d/gradle.sh"
+    path: "/home/{{ gradle_user }}/.profile.d/gradle.sh"
     modification_time: preserve
     access_time: preserve
     state: touch
-    owner: "{{ item }}"
-    group: "{{ item }}"
+    owner: "{{ gradle_user }}"
+    group: "{{ gradle_user }}"
     mode: 0700
-  loop: "{{ gradle_users }}"
 
 
 - name: Add local variable removing global Gradle from user path
   ansible.builtin.lineinfile:
-    path: "/home/{{ item }}/.profile.d/gradle.sh"
+    path: "/home/{{ gradle_user }}/.profile.d/gradle.sh"
     regex: "^CLEANED_PATH="
     line: "CLEANED_PATH=$(echo $PATH | sed -E  \"s|:\/opt\/gradle\/gradle-[0-9]+.[0-9]+\/bin||g\")"
-  loop: "{{ gradle_users }}"
 
 
 - name: Append Gradle version path to user path
   ansible.builtin.lineinfile: 
-    path: "/home/{{ item }}/.profile.d/gradle.sh"
+    path: "/home/{{ gradle_user }}/.profile.d/gradle.sh"
     regexp: "^export PATH=" 
-    line: "export PATH=$CLEANED_PATH:/opt/gradle/gradle-{{ gradle_version }}/bin"
-  loop: "{{ gradle_users }}"
+    line: "export PATH=/opt/gradle/gradle-{{ gradle_version }}/bin:$CLEANED_PATH"
+
 
 
 - name: Register GRADLE_USER_HOME for users
   ansible.builtin.lineinfile: 
-    path: "/home/{{ item }}/.profile.d/gradle.sh"
+    path: "/home/{{ gradle_user }}/.profile.d/gradle.sh"
     regexp: "^export GRADLE_USER_HOME=" 
-    line: "export GRADLE_USER_HOME=/home/{{ item }}/.gradle"
-  loop: "{{ gradle_users }}"
+    line: "export GRADLE_USER_HOME=/home/{{ gradle_user }}/.gradle"
+
