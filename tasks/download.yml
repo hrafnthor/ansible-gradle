@@ -1,0 +1,41 @@
+---
+# This task block folder creation, binary download and unarchiving of the
+# requested Gradle version. It finishes by attempting to remove any downloaded
+# files.
+
+- name: Install and configure Gradle globally
+  block:
+
+  - name: Ensure /opt/gradle directory exists
+    ansible.builtin.file:
+      path: "/opt/gradle/gradle-{{ gradle_version }}"
+      state: directory
+      modification_time: preserve
+      access_time: preserve
+      owner: "root"
+      group: "root"
+      mode: 0755
+
+
+  - name: Download Gradle version binary
+    ansible.builtin.get_url:
+      url: "{{ gradle_package_url }}/gradle-{{ gradle_version }}-bin.zip"
+      dest: "/opt/gradle/gradle-{{ gradle_version }}-bin.zip"
+      checksum: "{{ gradle_checksum_algorithm }}: {{ gradle_version_checksum }}"
+
+
+  - name: Extract Gradle version binary into /opt/gradle/
+    ansible.builtin.unarchive:
+      remote_src: yes
+      src: "/opt/gradle/gradle-{{ gradle_version }}-bin.zip"
+      dest: "/opt/gradle/gradle-{{ gradle_version }}"
+      owner: "root"
+      group: "root"
+      mode: 0755
+
+  always:
+
+    - name: Cleanup downloaded Gradle binary
+      ansible.builtin.file:
+        path: "/opt/gradle/gradle-{{ gradle_version }}-bin.zip"
+        state: absent
