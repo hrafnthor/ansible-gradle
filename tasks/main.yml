@@ -1,7 +1,5 @@
 ---
-
-# - name: Install and configure Gradle globally
-#   block:
+# Installs and configures the Gradle build system
 
 - name: Assert variables for Gradle installation
   ansible.builtin.import_tasks: assert.yml
@@ -21,14 +19,18 @@
 
 
 - name: Configure Gradle version globally
-  ansible.builtin.import_tasks: users/global.yml
+  ansible.builtin.import_tasks: global.yml
   when: gradle_global == true
   
 
-- name: Configure Gradle version per user
-  ansible.builtin.import_tasks: users/users.yml
-  when: gradle_global == false
+# - name: Configure Gradle version per user
+#   ansible.builtin.import_tasks: users/users.yml
+#   when: gradle_global == false
 
-  # add version to /etc/profile.d/gradle.sh
-  # create gradle_user_home folder
-  # set GRADLE_USER_HOME
+
+- name: Configure Java on user level
+  ansible.builtin.include_tasks: users.yml
+  loop: "{{ gradle_users }}"
+  loop_control:
+    loop_var: gradle_user
+  when: gradle_global == false
