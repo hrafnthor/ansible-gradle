@@ -34,6 +34,13 @@
     fail_msg: "Checksums are found at https://gradle.org/release-checksums"
 
 
+- name: Assert 'gradle_global' variable
+  ansible.builtin.assert:
+    that:
+      - gradle_global is defined
+      - gradle_global is boolean
+
+
 - name: Assert 'gradle_user_home' variable
   ansible.builtin.assert:
     that:

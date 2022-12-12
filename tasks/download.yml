@@ -6,7 +6,7 @@
 - name: Install and configure Gradle globally
   block:
 
-  - name: Ensure /opt/gradle directory exists
+  - name: Ensure /opt/gradle version directory exists
     ansible.builtin.file:
       path: "/opt/gradle/gradle-{{ gradle_version }}"
       state: directory

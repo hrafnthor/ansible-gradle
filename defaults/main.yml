@@ -1,5 +1,5 @@
 ---
-# 
+# Defines default values required for using this playbook 
 
 # Defines the checksum algorithm used to verify downloaded binaries 
 gradle_checksum_algorithm: "sha256"
@@ -7,9 +7,18 @@ gradle_checksum_algorithm: "sha256"
 # Defines the url from which the Gradle package will be downloaded from
 gradle_package_url: "https://services.gradle.org/distributions/"
 
+# Indicates if the configuration of the requested version should be global.
+#
+# If true:  The requested Gradle version will be configured globally for the
+#           system.
+#
+# Else:     The requested Gradle version will be configured for each and every
+#           user that is defined in the 'gradle_users' variable.
+gradle_global: true
+
 # Defines the user specific Gradle configuration home folder. 
 # This is not an absolute file path but relative to the user's home dir 
-# or $USER/gradle_user_home 
+# or $USER/gradle_user_home, where each user is defined in 'gradle_users'
 gradle_user_home: ".gradle"
 
 # Defines the list of users who will have Gradle configuration done for them
