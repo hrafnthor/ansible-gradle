@@ -1,2 +1,16 @@
 ---
-# defaults file for .
+# 
+
+# Defines the checksum algorithm used to verify downloaded binaries 
+gradle_checksum_algorithm: "sha256"
+
+# Defines the url from which the Gradle package will be downloaded from
+gradle_package_url: "https://services.gradle.org/distributions/"
+
+# Defines the user specific Gradle configuration home folder. 
+# This is not an absolute file path but relative to the user's home dir 
+# or $USER/gradle_user_home 
+gradle_user_home: ".gradle"
+
+# Defines the list of users who will have Gradle configuration done for them
+gradle_users: []
