@@ -1,0 +1,58 @@
+---
+
+- name: Assert 'gradle_package_url' variable
+  ansible.builtin.assert:
+    that:
+      - gradle_package_url is defined
+      - gradle_package_url is string
+      - gradle_package_url | length > 0
+
+
+- name: Assert 'gradle_checksum_algorithm' variable
+  ansible.builtin.assert:
+    that:
+      - gradle_checksum_algorithm is defined
+      - gradle_checksum_algorithm is string
+      - gradle_checksum_algorithm | length > 0
+      - gradle_checksum_algorithm is in ["sha256", "sha512"]
+
+
+- name: Assert 'gradle_version' variable
+  ansible.builtin.assert:
+    that:
+      - gradle_version is defined
+      - gradle_version is string
+      - gradle_version | length > 0
+
+
+- name: Assert 'gradle_version_checksum' variable
+  ansible.builtin.assert:
+    that:
+      - gradle_version_checksum is defined
+      - gradle_version_checksum is string
+      - gradle_version_checksum | length > 0
+    fail_msg: "Checksums are found at https://gradle.org/release-checksums"
+
+
+- name: Assert 'gradle_global' variable
+  ansible.builtin.assert:
+    that:
+      - gradle_global is defined
+      - gradle_global is boolean
+
+
+- name: Assert 'gradle_user_home' variable
+  ansible.builtin.assert:
+    that:
+      - gradle_user_home is defined
+      - gradle_user_home is string
+      - gradle_user_home | length > 0
+
+
+- name: Assert 'gradle_users' variable
+  ansible.builtin.assert:
+    that:
+      - gradle_users is defined
+      - gradle_users is not string
+      - gradle_users is not mapping 
+      - gradle_users is iterable
