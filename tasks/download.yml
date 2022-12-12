@@ -28,7 +28,7 @@
     ansible.builtin.unarchive:
       remote_src: yes
       src: "/opt/gradle/gradle-{{ gradle_version }}-bin.zip"
-      dest: "/opt/gradle/gradle-{{ gradle_version }}"
+      dest: "/opt/gradle/"
       owner: "root"
       group: "root"
       mode: 0755

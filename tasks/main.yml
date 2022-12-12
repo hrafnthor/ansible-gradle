@@ -1,2 +1,34 @@
 ---
-# tasks file for .
+
+# - name: Install and configure Gradle globally
+#   block:
+
+- name: Assert variables for Gradle installation
+  ansible.builtin.import_tasks: assert.yml
+  run_once: yes
+  delegate_to: localhost
+
+
+- name: Check for Gradle version directory in /opt/gradle/     
+  ansible.builtin.stat: 
+    path: "/opt/gradle/gradle-{{ gradle_version }}"
+  register: gradle_version_path
+
+
+- name: Download Gradle binary
+  ansible.builtin.import_tasks: download.yml
+  when: not gradle_version_path.stat.exists
+
+
+- name: Configure Gradle version globally
+  ansible.builtin.import_tasks: users/global.yml
+  when: gradle_global == true
+  
+
+- name: Configure Gradle version per user
+  ansible.builtin.import_tasks: users/users.yml
+  when: gradle_global == false
+
+  # add version to /etc/profile.d/gradle.sh
+  # create gradle_user_home folder
+  # set GRADLE_USER_HOME

@@ -1,0 +1,10 @@
+---
+# Configures the requested Gradle version globally 
+
+- name: Add Gradle version to global path
+  ansible.builtin.lineinfile: 
+    path: /etc/profile.d/gradle.sh
+    regexp: "^export PATH=" 
+    line: "export PATH=$PATH:/opt/gradle/gradle-{{ gradle_version }}/bin"
+    create: yes
+    mode: 0644
