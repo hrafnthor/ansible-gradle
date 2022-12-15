@@ -32,5 +32,14 @@ None.
 Example Playbook
 ----------------
 
-
 TODO
+
+License
+-------
+
+MIT license. See attached license file.
+
+Author Information
+------------------
+
+Find me at https://www.hth.is
