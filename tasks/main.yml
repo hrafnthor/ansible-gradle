@@ -21,16 +21,11 @@
 - name: Configure Gradle version globally
   ansible.builtin.import_tasks: global.yml
   when: gradle_global == true
-  
-
-# - name: Configure Gradle version per user
-#   ansible.builtin.import_tasks: users/users.yml
-#   when: gradle_global == false
 
 
-- name: Configure Java on user level
+- name: Configure Gradle on user level
   ansible.builtin.include_tasks: users.yml
   loop: "{{ gradle_users }}"
   loop_control:
     loop_var: gradle_user
-  when: gradle_global == false
+  when: gradle_users | length > 0
